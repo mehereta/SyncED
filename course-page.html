@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Materials - SyncEd</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .navbar {
+            background-color: #2ecc71;
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .upload-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .upload-btn {
+            padding: 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .slides-btn { background-color: #3498db; }
+        .syllabus-btn { background-color: #e74c3c; }
+        .document-btn { background-color: #f1c40f; }
+        .link-btn { background-color: #9b59b6; }
+        .other-btn { background-color: #2ecc71; }
+
+        .materials-list {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .material-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s;
+        }
+
+        .material-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .material-item:last-child {
+            border-bottom: none;
+        }
+
+        .material-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .material-info {
+            flex-grow: 1;
+        }
+
+        .material-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .material-date {
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <button class="back-btn" onclick="location.href='teacher-dashboard.html'">← Back to Dashboard</button>
+        <h1 id="course-title">Course Materials</h1>
+        <div style="width: 100px;"></div>
+    </div>
+
+    <div class="content">
+        <div class="upload-options">
+            <button class="upload-btn slides-btn" onclick="handleUpload('slides')">
+                <i class="fas fa-presentation"></i>
+                Upload Slides
+            </button>
+            <button class="upload-btn syllabus-btn" onclick="handleUpload('syllabus')">
+                <i class="fas fa-file-alt"></i>
+                Upload Syllabus
+            </button>
+            <button class="upload-btn document-btn" onclick="handleUpload('document')">
+                <i class="fas fa-file"></i>
+                Upload Document
+            </button>
+            <button class="upload-btn link-btn" onclick="handleUpload('link')">
+                <i class="fas fa-link"></i>
+                Add Link
+            </button>
+            <button class="upload-btn other-btn" onclick="handleUpload('other')">
+                <i class="fas fa-plus"></i>
+                Add Other
+            </button>
+        </div>
+
+        <div class="materials-list">
+            <h2>Uploaded Materials</h2>
+            
+            <!-- Sample Materials -->
+            <div class="material-item">
+                <div class="material-icon">📊</div>
+                <div class="material-info">
+                    <div class="material-title">Week 1 Lecture Slides</div>
+                    <div class="material-date">Uploaded: Jan 15, 2024</div>
+                </div>
+            </div>
+
+            <div class="material-item">
+                <div class="material-icon">📝</div>
+                <div class="material-info">
+                    <div class="material-title">Course Syllabus</div>
+                    <div class="material-date">Uploaded: Jan 10, 2024</div>
+                </div>
+            </div>
+
+            <div class="material-item">
+                <div class="material-icon">📄</div>
+                <div class="material-info">
+                    <div class="material-title">Assignment 1 Guidelines</div>
+                    <div class="material-date">Uploaded: Jan 18, 2024</div>
+                </div>
+            </div>
+
+            <div class="material-item">
+                <div class="material-icon">🔗</div>
+                <div class="material-info">
+                    <div class="material-title">Additional Resources Link</div>
+                    <div class="material-date">Added: Jan 20, 2024</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get course name from URL and update title
+        const urlParams = new URLSearchParams(window.location.search);
+        const course = urlParams.get('course');
+        if (course) {
+            document.getElementById('course-title').textContent = 
+                course.replace('101', ' 101').charAt(0).toUpperCase() + course.slice(1).replace('101', ' 101');
+        }
+
+        function handleUpload(type) {
+            alert(`Upload functionality for ${type} would be implemented here`);
+        }
+    </script>
+</body>
+</html> 

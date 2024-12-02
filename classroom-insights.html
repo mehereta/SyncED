@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Insights - SyncEd</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .navbar {
+            background-color: #2ecc71;
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .section-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .insight-categories {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .insight-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .characteristic-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .characteristic-item {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .feedback-item {
+            background-color: #fff3cd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-stats {
+            display: flex;
+            gap: 20px;
+            color: #666;
+        }
+
+        .stat-item {
+            background-color: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* New styles for the updated layout */
+        .insight-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .insight-button {
+            padding: 12px 24px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .insight-button:hover {
+            background-color: #27ae60;
+        }
+
+        .insight-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .student-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .student-item {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .student-profile {
+            padding: 15px;
+            margin-top: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        .feedback-category {
+            margin: 15px 0;
+        }
+
+        .feedback-toggle {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: #2ecc71;
+            cursor: pointer;
+            padding: 5px 0;
+            text-align: left;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <button class="back-btn" onclick="location.href='teacher-dashboard.html'">← Back to Dashboard</button>
+        <h1 id="course-title">Course Insights</h1>
+        <div style="width: 100px;"></div>
+    </div>
+
+    <div class="content">
+        <!-- Section Selection -->
+        <div id="section-selection">
+            <h2>Select a Section</h2>
+            <div class="section-list">
+                <div class="section-card" onclick="showSectionInsights('section1')">
+                    <div class="section-header">
+                        <h3>Section A</h3>
+                        <div class="section-stats">
+                            <span class="stat-item">30 Students</span>
+                            <span class="stat-item">MWF 9:00 AM</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-card" onclick="showSectionInsights('section2')">
+                    <div class="section-header">
+                        <h3>Section B</h3>
+                        <div class="section-stats">
+                            <span class="stat-item">25 Students</span>
+                            <span class="stat-item">TTH 2:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Insights -->
+        <div id="section-insights" class="hidden">
+            <h2 id="section-title"></h2>
+            
+            <div class="insight-buttons">
+                <button class="insight-button" onclick="showInsightContent('characteristics')">Class Characteristics</button>
+                <button class="insight-button" onclick="showInsightContent('students')">Student Profiles</button>
+                <button class="insight-button" onclick="showInsightContent('feedback')">Feedback</button>
+            </div>
+
+            <!-- Class Characteristics Content -->
+            <div id="characteristics-content" class="insight-content hidden">
+                <h3>Class Characteristics</h3>
+                <ul class="characteristic-list">
+                    <li class="characteristic-item">
+                        <strong>Participation Style:</strong>
+                        <p>70% active participants, 30% prefer written communication</p>
+                    </li>
+                    <li class="characteristic-item">
+                        <strong>Communication Preferences:</strong>
+                        <p>High engagement in group discussions, strong peer collaboration</p>
+                    </li>
+                    <li class="characteristic-item">
+                        <strong>Academic Goals:</strong>
+                        <p>85% career-focused, 15% general interest</p>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Student Profiles Content -->
+            <div id="students-content" class="insight-content hidden">
+                <ul class="student-list">
+                    <li class="student-item" onclick="toggleStudentProfile('student1')">
+                        John Doe
+                        <div id="student1-profile" class="student-profile hidden">
+                            <p><strong>Participation:</strong> Active in discussions</p>
+                            <p><strong>Goals:</strong> Career in software development</p>
+                            <p><strong>Strengths:</strong> Problem-solving, team collaboration</p>
+                            <p><strong>Areas for Growth:</strong> Time management</p>
+                            <p><strong>Preferred Communication:</strong> In-person discussions</p>
+                        </div>
+                    </li>
+                    <li class="student-item" onclick="toggleStudentProfile('student2')">
+                        Sarah Johnson
+                        <div id="student2-profile" class="student-profile hidden">
+                            <p><strong>Participation:</strong> Prefers written assignments</p>
+                            <p><strong>Goals:</strong> Graduate studies in Computer Science</p>
+                            <p><strong>Strengths:</strong> Detail-oriented, excellent documentation</p>
+                            <p><strong>Areas for Growth:</strong> Verbal presentation skills</p>
+                            <p><strong>Preferred Communication:</strong> Email</p>
+                        </div>
+                    </li>
+                    <li class="student-item" onclick="toggleStudentProfile('student3')">
+                        Michael Chen
+                        <div id="student3-profile" class="student-profile hidden">
+                            <p><strong>Participation:</strong> Regular contributor</p>
+                            <p><strong>Goals:</strong> Start a tech startup</p>
+                            <p><strong>Strengths:</strong> Creative thinking, quick learner</p>
+                            <p><strong>Areas for Growth:</strong> Code organization</p>
+                            <p><strong>Preferred Communication:</strong> Office hours</p>
+                        </div>
+                    </li>
+                    <li class="student-item" onclick="toggleStudentProfile('student4')">
+                        Emily Rodriguez
+                        <div id="student4-profile" class="student-profile hidden">
+                            <p><strong>Participation:</strong> Active in group projects</p>
+                            <p><strong>Goals:</strong> Web development career</p>
+                            <p><strong>Strengths:</strong> UI/UX design, peer mentoring</p>
+                            <p><strong>Areas for Growth:</strong> Backend development</p>
+                            <p><strong>Preferred Communication:</strong> Slack/Discord</p>
+                        </div>
+                    </li>
+                    <li class="student-item" onclick="toggleStudentProfile('student5')">
+                        Alex Thompson
+                        <div id="student5-profile" class="student-profile hidden">
+                            <p><strong>Participation:</strong> Quiet but engaged</p>
+                            <p><strong>Goals:</strong> Game development</p>
+                            <p><strong>Strengths:</strong> Algorithm optimization, mathematics</p>
+                            <p><strong>Areas for Growth:</strong> Team communication</p>
+                            <p><strong>Preferred Communication:</strong> Written feedback</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Feedback Content -->
+            <div id="feedback-content" class="insight-content hidden">
+                <div class="feedback-category">
+                    <button class="feedback-toggle" onclick="toggleFeedback('assignment1')">
+                        Assignment 1: Introduction to Programming Concepts ▼
+                    </button>
+                    <div id="assignment1-feedback" class="hidden">
+                        <div class="feedback-item">
+                            <p>"Instructions were clear and helpful"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Would appreciate more examples for complex concepts"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"The practice exercises helped reinforce the concepts"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-category">
+                    <button class="feedback-toggle" onclick="toggleFeedback('assignment2')">
+                        Assignment 2: Basic Data Structures ▼
+                    </button>
+                    <div id="assignment2-feedback" class="hidden">
+                        <div class="feedback-item">
+                            <p>"The visualization tools were very helpful"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Could use more real-world applications"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Group work helped understand different approaches"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-category">
+                    <button class="feedback-toggle" onclick="toggleFeedback('assignment3')">
+                        Assignment 3: Object-Oriented Programming Basics ▼
+                    </button>
+                    <div id="assignment3-feedback" class="hidden">
+                        <div class="feedback-item">
+                            <p>"The project-based approach was engaging"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"More time needed for complex inheritance concepts"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Code reviews were particularly helpful"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-category">
+                    <button class="feedback-toggle" onclick="toggleFeedback('assignment4')">
+                        Assignment 4: Advanced Data Structures ▼
+                    </button>
+                    <div id="assignment4-feedback" class="hidden">
+                        <div class="feedback-item">
+                            <p>"The incremental difficulty was well-paced"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Additional resources for tree structures were helpful"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Would benefit from more practice with balanced trees"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-category">
+                    <button class="feedback-toggle" onclick="toggleFeedback('midterm')">
+                        Midterm Project: Building a Simple Application ▼
+                    </button>
+                    <div id="midterm-feedback" class="hidden">
+                        <div class="feedback-item">
+                            <p>"Clear project requirements and milestones"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Appreciated the flexibility in choosing project topics"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Would benefit from intermediate checkpoints"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Peer review sessions were valuable"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-category">
+                    <button class="feedback-toggle" onclick="toggleFeedback('assignment5')">
+                        Assignment 5: Algorithm Analysis and Design ▼
+                    </button>
+                    <div id="assignment5-feedback" class="hidden">
+                        <div class="feedback-item">
+                            <p>"The complexity analysis examples were clear"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"More practice with recursive algorithms needed"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Interactive debugging sessions helped understanding"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-category">
+                    <button class="feedback-toggle" onclick="toggleFeedback('assignment6')">
+                        Assignment 6: Database Integration ▼
+                    </button>
+                    <div id="assignment6-feedback" class="hidden">
+                        <div class="feedback-item">
+                            <p>"SQL tutorials were comprehensive"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"More examples of database normalization would help"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Hands-on database design exercise was valuable"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-category">
+                    <button class="feedback-toggle" onclick="toggleFeedback('assignment7')">
+                        Assignment 7: Web Development Fundamentals ▼
+                    </button>
+                    <div id="assignment7-feedback" class="hidden">
+                        <div class="feedback-item">
+                            <p>"Good balance of frontend and backend tasks"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"API documentation could be more detailed"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Enjoyed the creative aspects of frontend design"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feedback-category">
+                    <button class="feedback-toggle" onclick="toggleFeedback('final')">
+                        Final Project: Full-Stack Application ▼
+                    </button>
+                    <div id="final-feedback" class="hidden">
+                        <div class="feedback-item">
+                            <p>"Comprehensive project that tied everything together"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Appreciated the technical mentorship sessions"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Group dynamics were challenging but educational"</p>
+                        </div>
+                        <div class="feedback-item">
+                            <p>"Documentation requirements helped with project organization"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get course name from URL and update title
+        const urlParams = new URLSearchParams(window.location.search);
+        const course = urlParams.get('course');
+        if (course) {
+            document.getElementById('course-title').textContent = 
+                course.replace('101', ' 101').charAt(0).toUpperCase() + course.slice(1).replace('101', ' 101');
+        }
+
+        function showSectionInsights(sectionId) {
+            document.getElementById('section-selection').classList.add('hidden');
+            document.getElementById('section-insights').classList.remove('hidden');
+            document.getElementById('section-title').textContent = 
+                sectionId === 'section1' ? 'Section A Insights' : 'Section B Insights';
+        }
+
+        function showInsightContent(section) {
+            // Hide all content sections
+            document.querySelectorAll('.insight-content').forEach(el => el.classList.add('hidden'));
+            // Show selected section
+            document.getElementById(`${section}-content`).classList.remove('hidden');
+        }
+
+        function toggleStudentProfile(studentId) {
+            const profile = document.getElementById(`${studentId}-profile`);
+            profile.classList.toggle('hidden');
+        }
+
+        function toggleFeedback(categoryId) {
+            const feedback = document.getElementById(`${categoryId}-feedback`);
+            feedback.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html> 

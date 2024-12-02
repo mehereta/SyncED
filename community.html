@@ -1,0 +1,203 @@
+<style>
+    .community-container {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .sidebar {
+        width: 300px;
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .main-content {
+        flex: 1;
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .teacher-suggestion {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        gap: 10px;
+    }
+
+    .teacher-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #e0e0e0;
+    }
+
+    .teacher-info {
+        flex: 1;
+    }
+
+    .follow-btn {
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        padding: 5px 15px;
+        border-radius: 15px;
+        cursor: pointer;
+    }
+
+    .post {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .post-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .rating-badge {
+        background: #2ecc71;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.9rem;
+    }
+
+    .create-post {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .post-type-selector {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .tab-button {
+        padding: 8px 16px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        border-radius: 20px;
+    }
+
+    .tab-button.active {
+        background: #2ecc71;
+        color: white;
+    }
+
+    .course-selector {
+        margin: 10px 0;
+    }
+</style>
+
+<div class="community-container">
+    <div class="sidebar">
+        <h3>Suggested Connections</h3>
+        <div class="suggestions-container">
+            <h4>From Your School</h4>
+            <div class="teacher-suggestion">
+                <div class="teacher-avatar"></div>
+                <div class="teacher-info">
+                    <strong>Sarah Miller</strong>
+                    <p>Mathematics</p>
+                </div>
+                <button class="follow-btn">Follow</button>
+            </div>
+            <div class="teacher-suggestion">
+                <div class="teacher-avatar"></div>
+                <div class="teacher-info">
+                    <strong>James Wilson</strong>
+                    <p>Physics</p>
+                </div>
+                <button class="follow-btn">Follow</button>
+            </div>
+
+            <h4>Teaching Similar Subjects</h4>
+            <div class="teacher-suggestion">
+                <div class="teacher-avatar"></div>
+                <div class="teacher-info">
+                    <strong>Emma Thompson</strong>
+                    <p>Mathematics - Lincoln High</p>
+                </div>
+                <button class="follow-btn">Follow</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="create-post">
+            <div class="post-type-selector">
+                <button class="tab-button active" onclick="switchPostType('reflection')">Reflection</button>
+                <button class="tab-button" onclick="switchPostType('lesson-plan')">Lesson Plan</button>
+            </div>
+            <textarea placeholder="Share your thoughts or lesson plan..." rows="4" style="width: 100%; margin-bottom: 10px;"></textarea>
+            <div class="course-selector">
+                <select>
+                    <option value="">Select Course</option>
+                    <option value="math101">Mathematics 101</option>
+                    <option value="physics101">Physics 101</option>
+                    <option value="general">General</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="follow-btn">Post Publicly</button>
+                <button class="follow-btn" style="background: #666;">Save to Reflection Book</button>
+            </div>
+        </div>
+
+        <div class="feed">
+            <div class="post">
+                <div class="post-header">
+                    <div class="teacher-avatar"></div>
+                    <div class="teacher-info">
+                        <strong>Emma Thompson</strong>
+                        <p>Mathematics - Lesson Plan</p>
+                    </div>
+                    <div class="rating-badge">Student Rating: 4.8/5</div>
+                </div>
+                <p>Interactive Geometry Lesson using GeoGebra. Students explored geometric transformations through hands-on digital manipulation...</p>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="teacher-avatar"></div>
+                    <div class="teacher-info">
+                        <strong>James Wilson</strong>
+                        <p>Physics - Reflection</p>
+                    </div>
+                </div>
+                <p>Today's lab experiment on momentum conservation was particularly effective. Students showed great engagement when...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchPostType(type) {
+        // Remove active class from all buttons
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        event.target.classList.add('active');
+        
+        // Update placeholder text based on type
+        const textarea = document.querySelector('textarea');
+        if (type === 'reflection') {
+            textarea.placeholder = 'Share your teaching reflection...';
+        } else {
+            textarea.placeholder = 'Share your lesson plan...';
+        }
+    }
+</script> 

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - SyncEd</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .navbar {
+            background-color: #2ecc71;
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .tab-container {
+            display: flex;
+            background-color: white;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            color: #666;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #2ecc71;
+        }
+
+        .content {
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            min-height: 400px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: white;
+            color: #2ecc71;
+        }
+
+        .course-list {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .course-btn {
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border: 2px solid #2ecc71;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .course-btn:hover {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .create-course-btn {
+            padding: 15px 20px;
+            background-color: #e8f5e9;
+            border: 2px dashed #2ecc71;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: #2ecc71;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .create-course-btn:hover {
+            background-color: #c8e6c9;
+        }
+
+        .dashboard-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            border: none;
+            background: #f1f1f1;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tab-button.active {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .community-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .teacher-card {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            gap: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .teacher-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ddd;
+        }
+
+        .main-feed {
+            flex: 1;
+        }
+
+        .create-post {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .post-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .post-tab {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .post-tab.active {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .post {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .student-rating {
+            background: #2ecc71;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        .follow-btn, .share-btn, .save-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: #2ecc71;
+            color: white;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: #666;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .post-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .profile-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .profile-summary .form-group {
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+
+        .profile-summary .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .profile-summary .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            min-height: 80px;
+            line-height: 1.4;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        .profile-summary .buttons {
+            margin-top: 20px;
+        }
+
+        .info-card {
+            display: grid;
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .info-item {
+            font-size: 1.1rem;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .reflection-book-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .course-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            padding: 5px 15px;
+            border-radius: 15px;
+            color: white;
+        }
+
+        .rating.high {
+            background: #2ecc71;
+        }
+
+        .rating.medium {
+            background: #f1c40f;
+        }
+
+        .rating.low {
+            background: #e74c3c;
+        }
+
+        .analyze-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .analysis-section {
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            line-height: 1.4;
+            font-family: Arial, sans-serif;
+        }
+
+        .background-info .form-group input {
+            width: 250px;
+            height: 40px;
+            min-height: unset;
+        }
+
+        .profile-summary .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            min-height: 80px;
+            line-height: 1.4;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        .modal-title {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .modal select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">SyncEd</div>
+        <button class="logout-btn" onclick="location.href='index.html'">Logout</button>
+    </div>
+
+    <div class="tab-container">
+        <button class="tab active" onclick="switchTab('courses')">Courses</button>
+        <button class="tab" onclick="switchTab('profile')">Profile</button>
+    </div>
+
+    <div class="content">
+        <div id="courses" class="tab-content active">
+            <h2>Courses</h2>
+            <div class="course-list">
+                <button class="course-btn" onclick="window.location.href='student-course-page.html'">Mathematics 101</button>
+                <button class="course-btn" onclick="window.location.href='student-course-page.html'">Physics 101</button>
+                <button class="course-btn" onclick="window.location.href='student-course-page.html'">Chemistry 101</button>
+            </div>
+        </div>
+
+        <div id="profile" class="tab-content">
+            <div class="profile-container">
+                <!-- Background Information Section -->
+                <div class="profile-section background-info">
+                    <h2>Background Information</h2>
+                    <div class="info-card">
+                        <div class="form-group">
+                            <label>Class Year</label>
+                            <select>
+                                <option>Freshman</option>
+                                <option>Sophomore</option>
+                                <option>Junior</option>
+                                <option>Senior</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Major</label>
+                            <input type="text">
+                        </div>
+                        <div class="form-group">
+                            <label>Hometown</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Characteristics Section -->
+                <div class="profile-section">
+                    <h2>Characteristics</h2>
+                    <ul class="survey-list">
+                        <li class="survey-item">
+                            <a href="#">Participation Style Survey</a>
+                        </li>
+                        <li class="survey-item">
+                            <a href="#">Communication Method Survey</a>
+                        </li>
+                        <li class="survey-item">
+                            <a href="#">Motivation Assessment</a>
+                        </li>
+                        <li class="survey-item">
+                            <a href="#">Interests and Goals Survey</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Profile Summary Section -->
+                <div class="profile-section profile-summary">
+                    <h2>Profile Summary</h2>
+                    <div class="form-group">
+                        <label>Participation Style</label>
+                        <textarea>Active participant, prefers group discussions. Regularly contributes to class discussions and works well in collaborative environments. Takes initiative in group projects and helps facilitate team communication.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Communication Method</label>
+                        <textarea>Visual learner, prefers written instructions. Benefits from diagrams, charts, and visual aids. Takes detailed notes and creates mind maps to organize information.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Motivation Factors</label>
+                        <textarea>Career-oriented, interested in practical applications. Motivated by real-world examples and industry-relevant projects. Seeks opportunities to apply theoretical concepts to practical scenarios.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Learning Interests</label>
+                        <textarea>Technology, problem-solving, team projects. Particularly interested in emerging technologies and their applications. Enjoys challenging problems that require creative solutions.</textarea>
+                    </div>
+                    <div class="buttons">
+                        <button class="btn">Update Profile</button>
+                        <button class="btn" onclick="openShareModal()">Share with Teacher</button>
+                    </div>
+                </div>
+
+                <!-- Share Profile Modal -->
+                <div id="shareModal" class="modal">
+                    <div class="modal-content">
+                        <h3 class="modal-title">Share Profile with Teacher</h3>
+                        <select id="courseSelect">
+                            <option value="">Select a Course</option>
+                            <option value="math101">Mathematics 101</option>
+                            <option value="physics101">Physics 101</option>
+                            <option value="chemistry101">Chemistry 101</option>
+                        </select>
+                        <div class="modal-buttons">
+                            <button class="btn" onclick="shareProfile()">Share</button>
+                            <button class="btn" style="background-color: #95a5a6;" onclick="closeShareModal()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Add active class to selected tab and content
+            document.querySelector(`button[onclick="switchTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Initialize the first tab as active when page loads
+        window.onload = function() {
+            switchTab('courses');
+        };
+
+        function openShareModal() {
+            document.getElementById('shareModal').style.display = 'block';
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        function shareProfile() {
+            const selectedCourse = document.getElementById('courseSelect').value;
+            if (selectedCourse) {
+                alert(`Profile shared with teacher of ${document.getElementById('courseSelect').options[document.getElementById('courseSelect').selectedIndex].text}`);
+                closeShareModal();
+            } else {
+                alert('Please select a course');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('shareModal');
+            if (event.target == modal) {
+                closeShareModal();
+            }
+        }
+    </script>
+</body>
+</html> 
